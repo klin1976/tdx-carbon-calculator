@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDX API Vercel Proxy Sample</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>TDX API Proxy 範例</h1>
+            <p>透過 Vercel Serverless Function 解決 CORS 與 Token 安全問題的前端範例</p>
+        </header>
+
+        <main>
+            <section class="card control-panel">
+                <div class="form-group">
+                    <label for="endpoint">API Path</label>
+                    <div class="input-wrapper">
+                        <span class="prefix">/api/basic</span>
+                        <input type="text" id="endpoint" value="/v2/Rail/TRA/LiveTrainDelay" placeholder="/v2/Rail/TRA/LiveTrainDelay">
+                    </div>
+                    <small>輸入 TDX API 路徑 (不含 Domain 與 /api/basic)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="params">Query Parameters (Optional)</label>
+                    <input type="text" id="params" value="$top=5&$format=JSON" placeholder="$top=10&$format=JSON">
+                </div>
+
+                <button id="fetchBtn">
+                    <span class="btn-text">發送請求</span>
+                    <div class="spinner"></div>
+                </button>
+            </section>
+
+            <section class="card result-panel">
+                <div class="result-header">
+                    <h2>回應結果</h2>
+                    <span id="status-badge" class="badge">Ready</span>
+                </div>
+                <div class="result-content">
+                    <pre><code id="json-output">// 點擊發送請求後，結果將顯示於此...</code></pre>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Designed for TDX API Developers.</p>
+            <p><a href="https://github.com/tdxmotc/SampleCode" target="_blank">TDX Sample Code</a></p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
