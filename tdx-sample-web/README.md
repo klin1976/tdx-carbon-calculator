@@ -49,6 +49,19 @@ node server-standalone.js
 
 ---
 
+## ☁️ 部署 (Publish)
+
+本專案使用 Vercel Serverless Function 運作 API Proxy，最適合部署至 Vercel。
+
+### 一鍵部署
+點擊下方按鈕，直接將此 Repository 部署至您的 Vercel 帳號：
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/klin1976/tdx-carbon-calculator&env=TDX_CLIENT_ID,TDX_CLIENT_SECRET)
+
+部署過程中，Vercel 會提示您輸入 `TDX_CLIENT_ID` 與 `TDX_CLIENT_SECRET`。
+
+---
+
 ## 🔐 設定 GitHub 環境變數 (Secrets)
 
 若您計畫在 **GitHub Codespaces** 運行或使用 **GitHub Actions**，由於安全因素 `.env` 不會被上傳，您需要手動設定 Secrets。
