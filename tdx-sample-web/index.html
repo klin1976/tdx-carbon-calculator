@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -17,12 +19,112 @@
         </header>
 
         <main>
+            <!-- 高雄捷運碳排放計算器 -->
+            <section class="card carbon-calculator">
+                <div class="calculator-header">
+                    <h2>🚇 高雄捷運碳排放計算器</h2>
+                    <p>選擇起迄站，計算您的碳足跡與減碳成效</p>
+                </div>
+
+                <div class="station-selector">
+                    <div class="form-group">
+                        <label for="originStation">起站</label>
+                        <select id="originStation" disabled>
+                            <option value="">載入中...</option>
+                        </select>
+                    </div>
+
+                    <div class="swap-icon" id="swapStations" title="交換起迄站">
+                        ⇄
+                    </div>
+
+                    <div class="form-group">
+                        <label for="destStation">迄站</label>
+                        <select id="destStation" disabled>
+                            <option value="">載入中...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="calculator-actions">
+                    <button id="calculateBtn" class="primary-btn" disabled>
+                        <span class="btn-text">計算碳排放</span>
+                        <div class="spinner"></div>
+                    </button>
+                </div>
+
+                <!-- 計算結果區 -->
+                <div id="carbonResult" class="carbon-result hidden">
+                    <div class="result-summary">
+                        <div class="route-info">
+                            <span id="resultOrigin">-</span>
+                            <span class="arrow">→</span>
+                            <span id="resultDest">-</span>
+                        </div>
+                        <div class="distance-info">
+                            <span class="label">距離</span>
+                            <span id="resultDistance" class="value">-</span> km
+                        </div>
+                    </div>
+
+                    <div class="emission-cards">
+                        <div class="emission-card metro">
+                            <div class="icon">🚇</div>
+                            <div class="transport-name">高雄捷運</div>
+                            <div class="emission-value">
+                                <span id="metroEmission">-</span>
+                                <span class="unit">gCO₂e</span>
+                            </div>
+                        </div>
+
+                        <div class="emission-card car">
+                            <div class="icon">🚗</div>
+                            <div class="transport-name">開車</div>
+                            <div class="emission-value">
+                                <span id="carEmission">-</span>
+                                <span class="unit">gCO₂e</span>
+                            </div>
+                            <div class="saved-badge" id="carSaved">-</div>
+                        </div>
+
+                        <div class="emission-card motorcycle">
+                            <div class="icon">🏍️</div>
+                            <div class="transport-name">機車</div>
+                            <div class="emission-value">
+                                <span id="motorcycleEmission">-</span>
+                                <span class="unit">gCO₂e</span>
+                            </div>
+                            <div class="saved-badge" id="motorcycleSaved">-</div>
+                        </div>
+                    </div>
+
+                    <div class="equivalents">
+                        <p>💡 這趟旅程的碳排放約等於：</p>
+                        <ul>
+                            <li>🌳 一棵樹 <span id="treeDays">-</span> 天吸收的 CO₂</li>
+                            <li>🔋 充電手機 <span id="phoneCharges">-</span> 次</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="history-actions">
+                    <button id="exportCSVBtn" class="secondary-btn">
+                        📥 匯出 CSV
+                    </button>
+                    <span id="historyCount" class="history-count">已記錄 0 筆</span>
+                </div>
+            </section>
+
+            <hr class="section-divider">
+
+            <!-- 原有的 API 測試面板 -->
             <section class="card control-panel">
                 <div class="form-group">
                     <label for="endpoint">API Path</label>
                     <div class="input-wrapper">
                         <span class="prefix">/api/basic</span>
-                        <input type="text" id="endpoint" value="/v2/Rail/TRA/LiveTrainDelay" placeholder="/v2/Rail/TRA/LiveTrainDelay">
+                        <input type="text" id="endpoint" value="/v2/Rail/TRA/LiveTrainDelay"
+                            placeholder="/v2/Rail/TRA/LiveTrainDelay">
                     </div>
                     <small>輸入 TDX API 路徑 (不含 Domain 與 /api/basic)</small>
                 </div>
@@ -55,6 +157,9 @@
         </footer>
     </div>
 
+    <script src="carbon-calculator.js"></script>
+    <script src="carbon-app.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>
