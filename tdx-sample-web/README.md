@@ -1,92 +1,79 @@
-# TDX API Vercel Serverless Sample
+# 🚅 高雄捷運碳排放計算器 (Kaohsiung Metro Carbon Calculator)
 
-這是一個示範如何安全地在前端應用中使用 [TDX 運輸資料流通服務](https://tdx.transportdata.tw/) API 的範例專案。
+這是一個基於 **TDX 運輸資料流通服務 API** 開發的 Web 應用程式，旨在幫助使用者計算搭乘高雄捷運（KRTC）的碳足跡，並與其他交通工具進行比較。
 
-## 為什麼需要這個專案？
+專案使用原生 Node.js 開發 (`server-standalone.js`)，具備高穩定性與快速啟動的特性。
 
-直接在純前端 (HTML/JS) 呼叫 TDX API 會遇到兩個主要問題：
-1. **CORS (跨域限制)**：瀏覽器會阻擋來自不同網域的 API 請求。
-2. **安全性風險**：若在前端程式碼中放入 `Client ID` 與 `Client Secret`，會導致金鑰外洩。
+---
 
-## 解決方案
+## ✨ 功能特色
 
-本專案使用 **Vercel Serverless Functions** 作為輕量級的中介層 (Proxy)：
+- **碳足跡計算**：根據起訖站距離，使用官方係數 (220 gCO₂e/人公里) 精準計算。
+- **減碳比較**：即時顯示相較於開車、騎機車所節省的碳排放量。
+- **具象化指標**：將減碳量轉換為「大樹吸收天數」或「手機充電次數」，讓數據更有感。
+- **歷史記錄 & 匯出**：自動記錄計算結果，並支援 **CSV 匯出**功能。
+- **無需資料庫**：純前端運算，搭配輕量級 Backend Proxy 解決 CORS 問題。
 
-1. **前端 (Browser)**：發送請求給自己的 Serverless Function (`/api/proxy`)。
-2. **後端 (Serverless)**：
-   - 安全地從環境變數讀取 ID 與 Secret。
-   - 向 TDX 取得 Access Token。
-   - 轉發請求至 TDX API 並回傳結果。
+---
 
-## 如何取得 API Key
+## 🚀 快速開始 (Local Development)
 
-Before you start, you need to register for a TDX account and get your API keys.
+### 1. 安裝與設定
+本專案不需安裝大量 npm 套件，只需 Node.js 環境。
 
-1. **註冊/登入 TDX 會員**
-   - 前往 [TDX 運輸資料流通服務](https://tdx.transportdata.tw/) 官網。
-   - 點擊右上角「登入/註冊」。
+1. **Clone 專案**
+   ```bash
+   git clone https://github.com/klin1976/tdx-carbon-calculator.git
+   cd tdx-carbon-calculator
+   ```
 
-2. **進入會員中心**
-   - 登入後，點擊「會員中心」。
+2. **設定環境變數**
+   複製範例設定檔並填入您的 TDX API 金鑰：
+   ```bash
+   cp .env.example .env
+   ```
+   編輯 `.env` 檔案，填入以下資訊（需至 TDX 官網申請）：
+   ```env
+   TDX_CLIENT_ID=您的Client_ID
+   TDX_CLIENT_SECRET=您的Client_Secret
+   ```
 
-3. **新增 API 金鑰**
-   - 在左側選單選擇 **「資料服務」** > **「API金鑰」**。
-   - 點擊 **「新增API金鑰」** 按鈕。
-   - 填寫應用程式名稱 (例如: `My TDX App`) 與說明。
-   - 建立後，您將會看到：
-     - **Client Id**
-     - **Client Secret** (請妥善保存，不要外洩)
-
-## 如何使用
-
-### 1. 本地開發 (Local Development)
-
-首先，你需要安裝 [Vercel CLI](https://vercel.com/docs/cli)：
+### 2. 啟動伺服器
+我們提供了獨立的 Server 腳本，直接執行即可：
 
 ```bash
-npm install -g vercel
+node server-standalone.js
 ```
 
-下載專案並安裝依賴：
+伺服器啟動後，請在瀏覽器開啟：[http://localhost:3000](http://localhost:3000)
 
-```bash
-git clone https://github.com/your-repo/tdx-sample-web.git
-cd tdx-sample-web
-npm install
-```
+---
 
-設定環境變數 (本地測試用)：
-在專案根目錄建立 `.env` 檔案：
+## 🔐 設定 GitHub 環境變數 (Secrets)
 
-```env
-TDX_CLIENT_ID=你的ClientId
-TDX_CLIENT_SECRET=你的ClientSecret
-```
+若您計畫在 **GitHub Codespaces** 運行或使用 **GitHub Actions**，由於安全因素 `.env` 不會被上傳，您需要手動設定 Secrets。
 
-啟動本地開發伺服器：
+1. 進入 GitHub Repository 的 **Settings**。
+2. 左側選單：**Secrets and variables** > **Codespaces** (或 Actions)。
+3. 點擊 **New repository secret**。
+4. 新增以下兩組變數：
+   - Name: `TDX_CLIENT_ID`
+     - Value: `(您的 Client ID)`
+   - Name: `TDX_CLIENT_SECRET`
+     - Value: `(您的 Client Secret)`
 
-```bash
-vercel dev
-```
+重啟 Codespaces 後，這些變數會自動注入到環境中。
 
-開啟瀏覽器訪問 `http://localhost:3000`。
+---
 
-### 2. 部署至 Vercel
+## 🛠️ 技術架構
 
-1. 將專案推送到 GitHub。
-2. 在 [Vercel Dashboard](https://vercel.com/dashboard) 匯入專案。
-3. 在 **Settings > Environment Variables** 中加入：
-   - `TDX_CLIENT_ID`
-   - `TDX_CLIENT_SECRET`
-4. 點擊 Deploy。
+- **Frontend**: Vanilla JavaScript, HTML5, CSS3 (無大型框架)
+- **Backend**: Node.js (`server-standalone.js`)
+- **API**: TDX Transport Data API (v2/Rail/Metro)
+- **Environment**: 自定義環境變數載入器 (Zero Dependencies)
 
-## 專案結構
+---
 
-- `index.html`: 前端主頁
-- `app.js`: 前端邏輯 (呼叫 `/api/proxy`)
-- `api/proxy.js`: Serverless Function (核心邏輯)
-- `vercel.json`: Vercel 設定檔
-
-## 授權
-
-MIT License
+## 📝 License
+MIT
