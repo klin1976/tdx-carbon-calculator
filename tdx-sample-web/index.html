@@ -13,7 +13,7 @@
 
 <body>
     <div class="container">
-        <header>
+        <header class="dev-only">
             <h1>TDX API Proxy 範例</h1>
             <p>透過 Vercel Serverless Function 解決 CORS 與 Token 安全問題的前端範例</p>
         </header>
@@ -115,10 +115,10 @@
                 </div>
             </section>
 
-            <hr class="section-divider">
+            <hr class="section-divider dev-only">
 
-            <!-- 原有的 API 測試面板 -->
-            <section class="card control-panel">
+            <!-- 原有的 API 測試面板 (僅開發環境顯示) -->
+            <section class="card control-panel dev-only">
                 <div class="form-group">
                     <label for="endpoint">API Path</label>
                     <div class="input-wrapper">
@@ -140,7 +140,7 @@
                 </button>
             </section>
 
-            <section class="card result-panel">
+            <section class="card result-panel dev-only">
                 <div class="result-header">
                     <h2>回應結果</h2>
                     <span id="status-badge" class="badge">Ready</span>
@@ -151,7 +151,7 @@
             </section>
         </main>
 
-        <footer>
+        <footer class="dev-only">
             <p>Designed for TDX API Developers.</p>
             <p><a href="https://github.com/tdxmotc/SampleCode" target="_blank">TDX Sample Code</a></p>
         </footer>
@@ -160,6 +160,19 @@
     <script src="carbon-calculator.js"></script>
     <script src="carbon-app.js"></script>
     <script src="app.js"></script>
+    
+    <!-- 環境判斷：正式環境隱藏開發用元件 -->
+    <script>
+        (function() {
+            const isLocalhost = window.location.hostname === 'localhost' || 
+                               window.location.hostname === '127.0.0.1';
+            if (!isLocalhost) {
+                document.querySelectorAll('.dev-only').forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
+        })();
+    </script>
 </body>
 
 </html>
